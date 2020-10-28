@@ -36,6 +36,7 @@
             this.rtbDevLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbDevLog.Location = new System.Drawing.Point(0, 0);
             this.rtbDevLog.Name = "rtbDevLog";
+            this.rtbDevLog.ReadOnly = true;
             this.rtbDevLog.Size = new System.Drawing.Size(559, 483);
             this.rtbDevLog.TabIndex = 0;
             this.rtbDevLog.Text = "";

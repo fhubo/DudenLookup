@@ -114,10 +114,11 @@ namespace DudenLookup
             return eList;
         }
 
-        public static List<DudenError> GetFull(string input)
+        public static List<DudenError> GetFull(string input, DevConsole dc)
         {
             List<DudenError> eList = new List<DudenError>();
             List<string> parts = SplitString(input);
+            dc.Log("split text into " + parts.Count.ToString() + " parts");
             for (int i = 0; i < parts.Count; i++)
             {
                 int offset = 0;
@@ -125,7 +126,10 @@ namespace DudenLookup
                 {
                     offset += parts[j].Length;
                 }
-                eList.AddRange(GetPart(parts[i], offset));
+                dc.Log("getting errors for part " + (i + 1).ToString() + " => {" + parts[i] + "}");
+                var es = GetPart(parts[i], offset);
+                dc.Log("received " + es.Count.ToString() + " errors for part " + (i + 1).ToString());
+                eList.AddRange(es);
             }
             return eList;
         }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace DudenLookup
 {
@@ -19,6 +20,7 @@ namespace DudenLookup
         public gui()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
             dc = new DevConsole();
             dc.Log("initialized dev console");
             errList = new List<DudenError>();
@@ -31,30 +33,34 @@ namespace DudenLookup
         {
             H.UpdateTitle("idle...");
         }
-
         
-
         private void runToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            H.UpdateTitle("sending request(s) to duden");
-            errList.Clear();
-            dc.Log("sending request(s) to duden");
+            runToolStripMenuItem.Enabled = false;
+            rtbInput.Text = new StringBuilder(rtbInput.Text).ToString();
+            Thread th = new Thread(() => {
+                H.UpdateTitle("sending request(s) to duden");
+                errList.Clear();
+                dc.Log("sending request(s) to duden");
 
-            try
-            {
-                errList.AddRange(Duden.GetFull(rtbInput.Text));
-            }
-            catch (Exception ex)
-            {
-                dc.Log(ex.Message);
-            }
+                try
+                {
+                    errList.AddRange(Duden.GetFull(rtbInput.Text, dc));
+                }
+                catch (Exception ex)
+                {
+                    dc.Log(ex.Message);
+                }
 
-            dc.Log("received errors from duden");
-            dc.Log("error count: " + errList.Count.ToString());
-            H.HighlightErrors(errList, rtbInput.SelectionStart);
-            H.UpdateErrorList();
-            lastInputText = rtbInput.Text;
-            H.UpdateTitle("idle...");
+                dc.Log("received errors from duden");
+                dc.Log("error count: " + errList.Count.ToString());
+                H.HighlightErrors(errList, rtbInput.SelectionStart);
+                H.UpdateErrorList();
+                lastInputText = rtbInput.Text;
+                H.UpdateTitle("idle...");
+                runToolStripMenuItem.Enabled = true;
+            });
+            th.Start();
         }
 
         private void rtbInput_Click(object sender, EventArgs e)
@@ -74,6 +80,8 @@ namespace DudenLookup
             try
             {
                 H.SetCurrentError(errList[listErrors.SelectedIndex], rtbInput.SelectionStart);
+                H.SelectError(errList[listErrors.SelectedIndex], rtbInput.SelectionStart);
+                rtbInput.ScrollToCaret();
             }
             catch (Exception ex)
             {
@@ -91,6 +99,8 @@ namespace DudenLookup
                 var cInd = rtbInput.SelectionStart;
                 foreach (var e in errList)
                 {
+                    if (rtbInput.Text.Substring(e.offset, e.length) == e.original)
+                        continue;
                     if (cInd >= e.offset && cInd <= e.offset + e.length)
                     {
                         var len = e.offset + e.length - cInd;
@@ -108,6 +118,8 @@ namespace DudenLookup
                 var cInd = rtbInput.SelectionStart;
                 foreach (var e in errList)
                 {
+                    if (rtbInput.Text.Substring(e.offset, e.length) == e.original)
+                        continue;
                     if (cInd < e.offset)
                     {
                         var change = rtbInput.TextLength - lastInputText.Length;
@@ -134,11 +146,12 @@ namespace DudenLookup
             sb.Insert(e.offset, e.proposals);
             rtbInput.Text = sb.ToString();
 
+            var cInd = rtbInput.SelectionStart;
             var eInd = errList.IndexOf(e);
             errList.Remove(e);
             H.UpdateErrorList();
-            H.UnselectAll(0);
-            H.HighlightErrors(errList, 0);
+            H.UnselectAll(cInd);
+            H.HighlightErrors(errList, cInd);
 
             try
             {
@@ -174,6 +187,8 @@ namespace DudenLookup
             {
                 CorrectError(e);
             }
+
+            H.UnselectAll(rtbInput.SelectionStart);
         }
 
         private void SelectNextError()
@@ -246,6 +261,18 @@ namespace DudenLookup
                 dc.Show();
             else
                 dc.Hide();
+        }
+
+        private void btnIgnore_Click(object sender, EventArgs ea)
+        {
+            foreach (var e in errList.ToList())
+            {
+                if (e.original == selectedError.original)
+                    errList.Remove(e);
+            }
+            H.UpdateErrorList();
+            H.UnselectAll(rtbInput.SelectionStart);
+            H.HighlightErrors(errList, rtbInput.SelectionStart);
         }
     }
 }

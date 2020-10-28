@@ -12,9 +12,13 @@ namespace DudenLookup
 
         public void Log(string s)
         {
-            rtbDevLog.Text += "[" + DateTime.Now.ToLongTimeString() + "] " + s + "\n";
-            rtbDevLog.Select(rtbDevLog.TextLength - 1, 0);
-            rtbDevLog.ScrollToCaret();
+            try
+            {
+                rtbDevLog.Text += "[" + DateTime.Now.ToLongTimeString() + "] " + s + "\n";
+                rtbDevLog.Select(rtbDevLog.TextLength - 1, 0);
+                rtbDevLog.ScrollToCaret();
+            }
+            catch { }
         }
     }
 }

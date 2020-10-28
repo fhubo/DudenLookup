@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Threading;
 
 namespace DudenLookup
 {
@@ -48,16 +49,20 @@ namespace DudenLookup
             dc.Log("SelectError: " + e.ToString());
         }
 
-        public void HighlightErrors(List<DudenError> es, int c)
+        public void HighlightErrors(List<DudenError> erl, int c)
         {
-            foreach (var e in es)
-            {
-                dc.Log("HightlightError: " + e.ToString());
-                m.rtbInput.Select(e.offset, e.length);
-                m.rtbInput.SelectionColor = e.GetHighlightColor();
-                m.rtbInput.SelectionBackColor = Color.White;
-            }
-            m.rtbInput.Select(c, 0);
+            var es = erl.ToArray();
+            var th = new Thread(() => {
+                foreach (var e in es)
+                {
+                    dc.Log("HightlightError: " + e.ToString());
+                    m.rtbInput.Select(e.offset, e.length);
+                    m.rtbInput.SelectionColor = e.GetHighlightColor();
+                    m.rtbInput.SelectionBackColor = Color.White;
+                }
+                m.rtbInput.Select(c, 0);
+            });
+            th.Start();
         }
 
         public void UnselectAll(int c)
