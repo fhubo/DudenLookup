@@ -49,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DevConsole.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DevConsole.Designer.cs">
+      <DependentUpon>DevConsole.cs</DependentUpon>
+    </Compile>
     <Compile Include="Duden.cs" />
     <Compile Include="DudenError.cs" />
     <Compile Include="gui.cs">
@@ -60,6 +66,9 @@
     <Compile Include="Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="DevConsole.resx">
+      <DependentUpon>DevConsole.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="gui.resx">
       <DependentUpon>gui.cs</DependentUpon>
     </EmbeddedResource>

@@ -23,13 +23,13 @@
 
         public override string ToString()
         {
-            string rval = "";
-            rval += errorCode + "\n";
-            rval += shortMessage + "\n";
-            rval += original + "\n";
-            rval += proposals + "\n";
-            rval += offset.ToString() + "\n";
-            rval += length.ToString() + "\n";
+            string rval = "{ ";
+            rval += errorCode + "; ";
+            rval += shortMessage + "; ";
+            rval += original + "; ";
+            rval += proposals + "; ";
+            rval += offset.ToString() + "; ";
+            rval += length.ToString() + "; }";
             return rval;
         }
 

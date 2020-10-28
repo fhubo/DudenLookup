@@ -31,6 +31,7 @@
             this.groupInputTextbox = new System.Windows.Forms.GroupBox();
             this.rtbInput = new System.Windows.Forms.RichTextBox();
             this.groupCurrentError = new System.Windows.Forms.GroupBox();
+            this.btnCorrect = new System.Windows.Forms.Button();
             this.txtErrProposal = new System.Windows.Forms.TextBox();
             this.lblProposal = new System.Windows.Forms.Label();
             this.txtErrMessage = new System.Windows.Forms.TextBox();
@@ -42,7 +43,15 @@
             this.runToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupErrorList = new System.Windows.Forms.GroupBox();
             this.listErrors = new System.Windows.Forms.ListBox();
-            this.btnCorrect = new System.Windows.Forms.Button();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnPrevious = new System.Windows.Forms.Button();
+            this.errorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.correctSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.correctAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectNextToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.selectPreviousToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.extraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.devConsoleToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupInputTextbox.SuspendLayout();
             this.groupCurrentError.SuspendLayout();
             this.menuStripTop.SuspendLayout();
@@ -77,6 +86,8 @@
             // groupCurrentError
             // 
             this.groupCurrentError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupCurrentError.Controls.Add(this.btnPrevious);
+            this.groupCurrentError.Controls.Add(this.btnNext);
             this.groupCurrentError.Controls.Add(this.btnCorrect);
             this.groupCurrentError.Controls.Add(this.txtErrProposal);
             this.groupCurrentError.Controls.Add(this.lblProposal);
@@ -90,6 +101,16 @@
             this.groupCurrentError.TabIndex = 1;
             this.groupCurrentError.TabStop = false;
             this.groupCurrentError.Text = "Error";
+            // 
+            // btnCorrect
+            // 
+            this.btnCorrect.Location = new System.Drawing.Point(210, 183);
+            this.btnCorrect.Name = "btnCorrect";
+            this.btnCorrect.Size = new System.Drawing.Size(75, 23);
+            this.btnCorrect.TabIndex = 2;
+            this.btnCorrect.Text = "Correct";
+            this.btnCorrect.UseVisualStyleBackColor = true;
+            this.btnCorrect.Click += new System.EventHandler(this.btnCorrect_Click);
             // 
             // txtErrProposal
             // 
@@ -147,7 +168,9 @@
             this.menuStripTop.BackColor = System.Drawing.SystemColors.Control;
             this.menuStripTop.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.menuStripTop.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.lookupToolStripMenuItem});
+            this.lookupToolStripMenuItem,
+            this.errorToolStripMenuItem,
+            this.extraToolStripMenuItem});
             this.menuStripTop.Location = new System.Drawing.Point(0, 0);
             this.menuStripTop.Name = "menuStripTop";
             this.menuStripTop.Size = new System.Drawing.Size(947, 24);
@@ -191,15 +214,85 @@
             this.listErrors.TabIndex = 0;
             this.listErrors.SelectedIndexChanged += new System.EventHandler(this.listErrors_SelectedIndexChanged);
             // 
-            // btnCorrect
+            // btnNext
             // 
-            this.btnCorrect.Location = new System.Drawing.Point(291, 183);
-            this.btnCorrect.Name = "btnCorrect";
-            this.btnCorrect.Size = new System.Drawing.Size(75, 23);
-            this.btnCorrect.TabIndex = 2;
-            this.btnCorrect.Text = "Correct";
-            this.btnCorrect.UseVisualStyleBackColor = true;
-            this.btnCorrect.Click += new System.EventHandler(this.btnCorrect_Click);
+            this.btnNext.Location = new System.Drawing.Point(291, 183);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.TabIndex = 3;
+            this.btnNext.Text = "Next";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
+            // 
+            // btnPrevious
+            // 
+            this.btnPrevious.Location = new System.Drawing.Point(129, 183);
+            this.btnPrevious.Name = "btnPrevious";
+            this.btnPrevious.Size = new System.Drawing.Size(75, 23);
+            this.btnPrevious.TabIndex = 4;
+            this.btnPrevious.Text = "Previous";
+            this.btnPrevious.UseVisualStyleBackColor = true;
+            this.btnPrevious.Click += new System.EventHandler(this.btnPrevious_Click);
+            // 
+            // errorToolStripMenuItem
+            // 
+            this.errorToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.correctSelectedToolStripMenuItem,
+            this.correctAllToolStripMenuItem,
+            this.selectNextToolStripMenuItem,
+            this.selectPreviousToolStripMenuItem});
+            this.errorToolStripMenuItem.Name = "errorToolStripMenuItem";
+            this.errorToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.errorToolStripMenuItem.Text = "Error";
+            // 
+            // correctSelectedToolStripMenuItem
+            // 
+            this.correctSelectedToolStripMenuItem.Name = "correctSelectedToolStripMenuItem";
+            this.correctSelectedToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F3;
+            this.correctSelectedToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.correctSelectedToolStripMenuItem.Text = "Correct Selected";
+            this.correctSelectedToolStripMenuItem.Click += new System.EventHandler(this.correctSelectedToolStripMenuItem_Click);
+            // 
+            // correctAllToolStripMenuItem
+            // 
+            this.correctAllToolStripMenuItem.Name = "correctAllToolStripMenuItem";
+            this.correctAllToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F4;
+            this.correctAllToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.correctAllToolStripMenuItem.Text = "Correct All";
+            this.correctAllToolStripMenuItem.Click += new System.EventHandler(this.correctAllToolStripMenuItem_Click);
+            // 
+            // selectNextToolStripMenuItem
+            // 
+            this.selectNextToolStripMenuItem.Name = "selectNextToolStripMenuItem";
+            this.selectNextToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F2;
+            this.selectNextToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectNextToolStripMenuItem.Text = "Select Next";
+            this.selectNextToolStripMenuItem.Click += new System.EventHandler(this.selectNextToolStripMenuItem_Click);
+            // 
+            // selectPreviousToolStripMenuItem
+            // 
+            this.selectPreviousToolStripMenuItem.Name = "selectPreviousToolStripMenuItem";
+            this.selectPreviousToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.F1;
+            this.selectPreviousToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.selectPreviousToolStripMenuItem.Text = "Select Previous";
+            this.selectPreviousToolStripMenuItem.Click += new System.EventHandler(this.selectPreviousToolStripMenuItem_Click);
+            // 
+            // extraToolStripMenuItem
+            // 
+            this.extraToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.devConsoleToolStripMenuItem});
+            this.extraToolStripMenuItem.Name = "extraToolStripMenuItem";
+            this.extraToolStripMenuItem.Size = new System.Drawing.Size(45, 20);
+            this.extraToolStripMenuItem.Text = "Extra";
+            // 
+            // devConsoleToolStripMenuItem
+            // 
+            this.devConsoleToolStripMenuItem.Name = "devConsoleToolStripMenuItem";
+            this.devConsoleToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)(((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Shift) 
+            | System.Windows.Forms.Keys.D)));
+            this.devConsoleToolStripMenuItem.Size = new System.Drawing.Size(267, 22);
+            this.devConsoleToolStripMenuItem.Text = "Dev Console";
+            this.devConsoleToolStripMenuItem.Click += new System.EventHandler(this.devConsoleToolStripMenuItem_Click);
             // 
             // gui
             // 
@@ -246,6 +339,15 @@
         public System.Windows.Forms.TextBox txtErrCode;
         public System.Windows.Forms.ListBox listErrors;
         private System.Windows.Forms.Button btnCorrect;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnPrevious;
+        private System.Windows.Forms.ToolStripMenuItem errorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem correctSelectedToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem correctAllToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectNextToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem selectPreviousToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem extraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem devConsoleToolStripMenuItem;
     }
 }
 

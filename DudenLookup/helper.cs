@@ -1,20 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace DudenLookup
 {
     public class Helper
     {
         private gui m;
+        private DevConsole dc;
 
-        public Helper(gui sender)
+        public Helper(gui sender, DevConsole dc)
         {
             m = sender;
+            this.dc = dc;
         }
 
         public void UpdateTitle(string input)
@@ -40,40 +37,36 @@ namespace DudenLookup
                 m.rtbInput.SelectionBackColor = Color.LightGray;
                 m.rtbInput.Select(cursorPos, 0);
             }
+            dc.Log("SetCurrentError: " + e.ToString());
         }
 
         public void SelectError(DudenError e, int c)
         {
             m.rtbInput.Select(e.offset, e.length);
-            m.rtbInput.SelectionColor = e.GetHighlightColor();
+            m.rtbInput.SelectionBackColor = Color.LightGray;
             m.rtbInput.Select(c, 0);
+            dc.Log("SelectError: " + e.ToString());
         }
 
-        public void SelectError(List<DudenError> es, int c)
+        public void HighlightErrors(List<DudenError> es, int c)
         {
             foreach (var e in es)
             {
+                dc.Log("HightlightError: " + e.ToString());
                 m.rtbInput.Select(e.offset, e.length);
                 m.rtbInput.SelectionColor = e.GetHighlightColor();
+                m.rtbInput.SelectionBackColor = Color.White;
             }
             m.rtbInput.Select(c, 0);
         }
 
-        public void UnSelectError(DudenError e, int c)
+        public void UnselectAll(int c)
         {
-            m.rtbInput.Select(e.offset, e.length);
-            m.rtbInput.SelectionColor = Color.White;
+            m.rtbInput.Select(0, m.rtbInput.Text.Length);
+            m.rtbInput.SelectionColor = Color.Black;
+            m.rtbInput.SelectionBackColor = Color.White;
             m.rtbInput.Select(c, 0);
-        }
-
-        public void UnSelectError(List<DudenError> es, int c)
-        {
-            foreach (var e in es)
-            {
-                m.rtbInput.Select(e.offset, e.length);
-                m.rtbInput.SelectionColor = Color.White;
-            }
-            m.rtbInput.Select(c, 0);
+            dc.Log("UnselectAll");
         }
 
         public void UpdateErrorList()
@@ -83,6 +76,7 @@ namespace DudenLookup
             {
                 m.listErrors.Items.Add(e.original);
             }
+            dc.Log("UpdateErrorList");
         }
     }
 }
