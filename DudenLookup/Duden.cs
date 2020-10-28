@@ -100,7 +100,7 @@ namespace DudenLookup
                     var proposals = "";
                     try
                     {
-                        proposals = spellAdvObj.GetValue("proposals").ToList().FirstOrDefault().ToString();
+                        proposals = spellAdvObj.GetValue("proposals").ToList().FirstOrDefault() == null ? "" : spellAdvObj.GetValue("proposals").ToList().FirstOrDefault().ToString();
                     }
                     catch { }
 

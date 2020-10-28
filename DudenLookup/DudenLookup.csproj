@@ -57,6 +57,7 @@
     <Compile Include="gui.Designer.cs">
       <DependentUpon>gui.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="gui.resx">

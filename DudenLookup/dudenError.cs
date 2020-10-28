@@ -8,8 +8,8 @@
         public string original { get; }
         public string proposals { get; }
 
-        public int offset { get; }
-        public int length { get; }
+        public int offset { get; set; }
+        public int length { get; set; }
 
         public DudenError(string errorCode, string shortMessage, string original, string proposals, int offset, int length)
         {
